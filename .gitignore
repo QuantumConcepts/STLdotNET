@@ -5,6 +5,6 @@ obj
 # mstest test results
 TestResults
 
-.svn
-.suo
-.user
+*.svn
+*.suo
+*.user

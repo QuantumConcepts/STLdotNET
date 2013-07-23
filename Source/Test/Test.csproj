@@ -35,9 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QuantumConcepts.Common, Version=1.0.1.0, Culture=neutral, PublicKeyToken=ab18da1c1d053b41, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Components\QuantumConcepts.Common.dll</HintPath>
+    <Reference Include="QuantumConcepts.Common">
+      <HintPath>..\..\Components\QuantumConcepts.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

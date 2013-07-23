@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StereoLithography", "StereoLithography\StereoLithography.csproj", "{F32F3151-1595-4211-A01E-2F7BEB34F88D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STL", "STL\STL.csproj", "{F32F3151-1595-4211-A01E-2F7BEB34F88D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{F8604512-723C-493E-BFD3-ECA49558CA72}"
 EndProject

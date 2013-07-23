@@ -58,9 +58,9 @@
     <Compile Include="STLTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StereoLithography\StereoLithography.csproj">
+    <ProjectReference Include="..\STL\STL.csproj">
       <Project>{f32f3151-1595-4211-a01e-2f7beb34f88d}</Project>
-      <Name>StereoLithography</Name>
+      <Name>STL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

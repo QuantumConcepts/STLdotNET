@@ -2,10 +2,10 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Stereo Lithography (STL) Format")]
+[assembly: AssemblyTitle("STL Format Reader and Writer")]
 [assembly: AssemblyDescription("Handles reading and writing the STL format.")]
 [assembly: AssemblyCompany("Quantum Concepts Corporation")]
-[assembly: AssemblyProduct("Stereo Lithography (STL) Format")]
+[assembly: AssemblyProduct("STL Format Reader and Writer")]
 [assembly: AssemblyCopyright("Copyright © Quantum Concepts Corporation")]
 [assembly: AssemblyTrademark("Copyright © Quantum Concepts Corporation")]
 [assembly: AssemblyVersion("1.0.0.0")]

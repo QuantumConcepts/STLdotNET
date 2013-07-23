@@ -8,8 +8,8 @@
     <ProjectGuid>{F32F3151-1595-4211-A01E-2F7BEB34F88D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QuantumConcepts.Formats.StereoLithography</RootNamespace>
-    <AssemblyName>QuantumConcepts.Formats.StereoLithography</AssemblyName>
+    <RootNamespace>QuantumConcepts.Formats.STL</RootNamespace>
+    <AssemblyName>QuantumConcepts.Formats.STL</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -49,7 +49,7 @@
     <Compile Include="Facet.cs" />
     <Compile Include="Normal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="STL.cs" />
+    <Compile Include="STLDocument.cs" />
     <Compile Include="Vertex.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

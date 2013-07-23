@@ -8,24 +8,24 @@ using QuantumConcepts.Common.Extensions;
 
 namespace QuantumConcepts.Formats.StereoLithography
 {
-    public class STL : IEquatable<STL>
+    public class STLDocument : IEquatable<STLDocument>
     {
         public string Name { get; set; }
         public List<Facet> Facets { get; set; }
 
-        public STL()
+        public STLDocument()
         {
             this.Facets = new List<Facet>();
         }
 
-        public STL(string name, IEnumerable<Facet> facets)
+        public STLDocument(string name, IEnumerable<Facet> facets)
             : this()
         {
             this.Name = name;
             this.Facets = facets.ToList();
         }
 
-        public static STL Read(StreamReader reader)
+        public static STLDocument Read(StreamReader reader)
         {
             const string regexSolid = @"solid\s+(?<Name>[^\r\n]+)?";
 
@@ -35,7 +35,7 @@ namespace QuantumConcepts.Formats.StereoLithography
             //Read the header.
             string header = reader.ReadLine();
             Match headerMatch = Regex.Match(header, regexSolid);
-            STL stl = null;
+            STLDocument stl = null;
             Facet currentFacet = null;
 
             //Check the header.
@@ -43,7 +43,7 @@ namespace QuantumConcepts.Formats.StereoLithography
                 throw new FormatException("Invalid STL header, expected \"solid [name]\" but found \"{0}\".".FormatString(header));
 
             //Create the STL and extract the name (optional).
-            stl = new STL()
+            stl = new STLDocument()
             {
                 Name = headerMatch.Groups["Name"].Value
             };
@@ -55,14 +55,14 @@ namespace QuantumConcepts.Formats.StereoLithography
             return stl;
         }
 
-        public static STL Read(BinaryReader reader)
+        public static STLDocument Read(BinaryReader reader)
         {
             if (reader == null)
                 return null;
 
             byte[] buffer = new byte[80];
             string header = null;
-            STL stl = null;
+            STLDocument stl = null;
             Facet currentFacet = null;
 
             //Read the header.
@@ -70,7 +70,7 @@ namespace QuantumConcepts.Formats.StereoLithography
             header = Encoding.ASCII.GetString(buffer);
 
             //Create the STL.
-            stl = new STL();
+            stl = new STLDocument();
 
             //Read (ignore) the number of triangles.
             reader.ReadBytes(4);
@@ -114,7 +114,7 @@ namespace QuantumConcepts.Formats.StereoLithography
             return "solid {0}".FormatString(this.Name);
         }
 
-        public bool Equals(STL other)
+        public bool Equals(STLDocument other)
         {
             return (string.Equals(this.Name, other.Name)
                     && this.Facets.Count == other.Facets.Count

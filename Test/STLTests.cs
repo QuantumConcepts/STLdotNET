@@ -16,13 +16,13 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         [TestMethod]
         public void FromString()
         {
-            STL stl = null;
+            STLDocument stl = null;
 
             using (Stream stream = GetData("ASCII.stl"))
             {
                 using (StreamReader reader = new StreamReader(stream))
                 {
-                    stl = STL.Read(reader);
+                    stl = STLDocument.Read(reader);
                 }
             }
 
@@ -36,14 +36,14 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         [TestMethod]
         public void FromBinary()
         {
-            STL stl = null;
+            STLDocument stl = null;
 
             using (Stream stream = GetData("Binary.stl"))
             {
                 using (BinaryReader reader = new BinaryReader(stream))
                 {
                     {
-                        stl = STL.Read(reader);
+                        stl = STLDocument.Read(reader);
                     }
                 }
             }
@@ -58,7 +58,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         [TestMethod]
         public void WriteString()
         {
-            STL stl1 = new STL("WriteString", new List<Facet>()
+            STLDocument stl1 = new STLDocument("WriteString", new List<Facet>()
             {
                 new Facet(new Normal( 0, 0, 1), new List<Vertex>()
                 {
@@ -67,7 +67,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
                     new Vertex(-10, 0, 0)
                 }, 0)
             });
-            STL stl2 = null;
+            STLDocument stl2 = null;
             byte[] stl1Data = null;
             string stl1String = null;
             byte[] stl2Data = null;
@@ -88,7 +88,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
             {
                 using (StreamReader reader = new StreamReader(stream))
                 {
-                    stl2 = STL.Read(reader);
+                    stl2 = STLDocument.Read(reader);
                 }
 
                 stl2Data = stream.ToArray();
@@ -102,7 +102,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         [TestMethod]
         public void WriteBinary()
         {
-            STL stl1 = new STL("WriteBinary", new List<Facet>()
+            STLDocument stl1 = new STLDocument("WriteBinary", new List<Facet>()
             {
                 new Facet(new Normal( 0, 0, 1), new List<Vertex>()
                 {
@@ -111,7 +111,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
                     new Vertex(-10, 0, 0)
                 }, 0)
             });
-            STL stl2 = null;
+            STLDocument stl2 = null;
             byte[] stl1Data = null;
             byte[] stl2Data = null;
 
@@ -129,7 +129,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
             {
                 using (StreamReader reader = new StreamReader(stream))
                 {
-                    stl2 = STL.Read(reader);
+                    stl2 = STLDocument.Read(reader);
                 }
 
                 stl2Data = stream.ToArray();
@@ -142,7 +142,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         [TestMethod]
         public void Equality()
         {
-            STL[] stls = new STL[2];
+            STLDocument[] stls = new STLDocument[2];
 
             for (int i = 0; i < stls.Length; i++)
             {
@@ -150,7 +150,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
                 {
                     using (StreamReader reader = new StreamReader(stream))
                     {
-                        stls[i] = STL.Read(reader);
+                        stls[i] = STLDocument.Read(reader);
                     }
                 }
             }

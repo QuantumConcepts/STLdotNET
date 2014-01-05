@@ -8,5 +8,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("STL Format Reader and Writer")]
 [assembly: AssemblyCopyright("Copyright © Quantum Concepts Corporation")]
 [assembly: AssemblyTrademark("Copyright © Quantum Concepts Corporation")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]

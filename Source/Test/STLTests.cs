@@ -14,6 +14,29 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
     public class STLTests
     {
         [TestMethod]
+        [Description("Ensures that both string and binary STL files can be read by the STLDocument.Read method.")]
+        public void FromStringAndBinary()
+        {
+            STLDocument stlString = null;
+            STLDocument stlBinary = null;
+
+            using (Stream stream = GetData("ASCII.stl"))
+            {
+                stlString = STLDocument.Read(stream);
+            }
+
+            Assert.IsNotNull(stlString);
+
+            using (Stream stream = GetData("Binary.stl"))
+            {
+                stlBinary = STLDocument.Read(stream);
+            }
+
+            Assert.IsNotNull(stlBinary);
+        }
+
+        [TestMethod]
+        [Description("Ensures that reading string STLs works correctly.")]
         public void FromString()
         {
             STLDocument stl = null;
@@ -34,6 +57,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         }
 
         [TestMethod]
+        [Description("Ensures that reading binary STLs works correctly.")]
         public void FromBinary()
         {
             STLDocument stl = null;
@@ -56,6 +80,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         }
 
         [TestMethod]
+        [Description("Ensures that writing string STLs works correctly.")]
         public void WriteString()
         {
             STLDocument stl1 = new STLDocument("WriteString", new List<Facet>()
@@ -100,6 +125,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         }
 
         [TestMethod]
+        [Description("Ensures that writing binary STLs works correctly.")]
         public void WriteBinary()
         {
             STLDocument stl1 = new STLDocument("WriteBinary", new List<Facet>()
@@ -140,6 +166,83 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         }
 
         [TestMethod]
+        [Description("Ensures that copying an STL document as text works correctly.")]
+        public void CopyAsText()
+        {
+            STLDocument stlStringFrom = null;
+            STLDocument stlStringTo = null;
+            STLDocument stlBinaryFrom = null;
+            STLDocument stlBinaryTo = null;
+
+            using (Stream inStream = GetData("ASCII.stl"))
+            {
+                stlStringFrom = STLDocument.Read(inStream);
+            }
+
+            using (Stream inStream = GetData("ASCII.stl"), outStream = new MemoryStream())
+            {
+                stlStringTo = STLDocument.CopyAsText(inStream, outStream);
+            }
+
+            Assert.IsNotNull(stlStringFrom);
+            Assert.IsNotNull(stlStringTo);
+            Assert.IsTrue(stlStringFrom.Equals(stlStringTo));
+
+            using (Stream inStream = GetData("Binary.stl"))
+            {
+                stlBinaryFrom = STLDocument.Read(inStream);
+            }
+
+            using (Stream inStream = GetData("Binary.stl"), outStream = new MemoryStream())
+            {
+                stlBinaryTo = STLDocument.CopyAsText(inStream, outStream);
+            }
+
+            Assert.IsNotNull(stlBinaryFrom);
+            Assert.IsNotNull(stlBinaryTo);
+            Assert.IsTrue(stlBinaryFrom.Equals(stlBinaryTo));
+        }
+
+        [TestMethod]
+        [Description("Ensures that copying an STL document as binary works correctly.")]
+        public void CopyAsBinary()
+        {
+            STLDocument stlStringFrom = null;
+            STLDocument stlStringTo = null;
+            STLDocument stlBinaryFrom = null;
+            STLDocument stlBinaryTo = null;
+
+            using (Stream inStream = GetData("ASCII.stl"))
+            {
+                stlStringFrom = STLDocument.Read(inStream);
+            }
+
+            using (Stream inStream = GetData("ASCII.stl"), outStream = new MemoryStream())
+            {
+                stlStringTo = STLDocument.CopyAsBinary(inStream, outStream);
+            }
+
+            Assert.IsNotNull(stlStringFrom);
+            Assert.IsNotNull(stlStringTo);
+            Assert.IsTrue(stlStringFrom.Equals(stlStringTo));
+
+            using (Stream inStream = GetData("Binary.stl"))
+            {
+                stlBinaryFrom = STLDocument.Read(inStream);
+            }
+
+            using (Stream inStream = GetData("Binary.stl"), outStream = new MemoryStream())
+            {
+                stlBinaryTo = STLDocument.CopyAsBinary(inStream, outStream);
+            }
+
+            Assert.IsNotNull(stlBinaryFrom);
+            Assert.IsNotNull(stlBinaryTo);
+            Assert.IsTrue(stlBinaryFrom.Equals(stlBinaryTo));
+        }
+
+        [TestMethod]
+        [Description("Ensures that STL equality comparison functions correctly.")]
         public void Equality()
         {
             STLDocument[] stls = new STLDocument[2];

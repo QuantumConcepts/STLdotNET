@@ -11,6 +11,9 @@ namespace QuantumConcepts.Formats.StereoLithography
     /// <summary>The outer-most STL object which contains the <see cref="Facets"/> that make up the model.</summary>
     public class STLDocument : IEquatable<STLDocument>, IEnumerable<Facet>
     {
+        /// <summary>Defines the buffer size to use when reading from a <see cref="StreamReader"/>.</summary>
+        private const int DefaultBufferSize = 1024;
+
         /// <summary>The name of the solid.</summary>
         /// <remarks>This property is not used for binary STLs.</remarks>
         public string Name { get; set; }
@@ -77,14 +80,14 @@ namespace QuantumConcepts.Formats.StereoLithography
             //Determine if the stream contains a text-based or binary-based <see cref="STLDocument"/>, and then read it.
             if (IsText(stream))
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using (StreamReader reader = new StreamReader(stream, Encoding.ASCII, true, DefaultBufferSize, true))
                 {
                     return Read(reader);
                 }
             }
             else
             {
-                using (BinaryReader reader = new BinaryReader(stream))
+                using (BinaryReader reader = new BinaryReader(stream, Encoding.ASCII, true))
                 {
                     return Read(reader);
                 }
@@ -183,7 +186,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         {
             STLDocument stl = Read(inStream);
 
-            using (StreamWriter writer = new StreamWriter(outStream))
+            using (StreamWriter writer = new StreamWriter(outStream, Encoding.ASCII, DefaultBufferSize, true))
                 stl.Write(writer);
 
             return stl;
@@ -197,7 +200,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         {
             STLDocument stl = Read(inStream);
 
-            using (BinaryWriter writer = new BinaryWriter(outStream))
+            using (BinaryWriter writer = new BinaryWriter(outStream, Encoding.ASCII, true))
                 stl.Write(writer);
 
             return stl;

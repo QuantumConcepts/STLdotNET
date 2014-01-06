@@ -13,13 +13,13 @@ namespace QuantumConcepts.Formats.StereoLithography
     public class Vertex : IEquatable<Vertex>
     {
         /// <summary>The X coordinate of this <see cref="Vertex"/>.</summary>
-        public decimal X { get; set; }
+        public float X { get; set; }
 
         /// <summary>The Y coordinate of this <see cref="Vertex"/>.</summary>
-        public decimal Y { get; set; }
+        public float Y { get; set; }
 
         /// <summary>The Z coordinate of this <see cref="Vertex"/>.</summary>
-        public decimal Z { get; set; }
+        public float Z { get; set; }
 
         /// <summary>Creates a new, empty <see cref="Vertex"/>.</summary>
         public Vertex() { }
@@ -28,7 +28,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <param name="x"><see cref="X"/></param>
         /// <param name="y"><see cref="Y"/></param>
         /// <param name="z"><see cref="Z"/></param>
-        public Vertex(decimal x, decimal y, decimal z)
+        public Vertex(float x, float y, float z)
             : this()
         {
             this.X = x;
@@ -44,7 +44,7 @@ namespace QuantumConcepts.Formats.StereoLithography
             const NumberStyles numberStyle = (NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign);
 
             string data = null;
-            decimal x, y, z;
+            float x, y, z;
             Match match = null;
 
             if (reader == null)
@@ -63,13 +63,13 @@ namespace QuantumConcepts.Formats.StereoLithography
                 return null;
 
             //Parse the three coordinates.
-            if (!decimal.TryParse(match.Groups["X"].Value, numberStyle, CultureInfo.CurrentCulture, out x))
+            if (!float.TryParse(match.Groups["X"].Value, numberStyle, CultureInfo.CurrentCulture, out x))
                 throw new FormatException("Could not parse X coordinate \"{0}\" as a decimal.".FormatString(match.Groups["X"]));
 
-            if (!decimal.TryParse(match.Groups["Y"].Value, numberStyle, CultureInfo.CurrentCulture, out y))
+            if (!float.TryParse(match.Groups["Y"].Value, numberStyle, CultureInfo.CurrentCulture, out y))
                 throw new FormatException("Could not parse Y coordinate \"{0}\" as a decimal.".FormatString(match.Groups["Y"]));
 
-            if (!decimal.TryParse(match.Groups["Z"].Value, numberStyle, CultureInfo.CurrentCulture, out z))
+            if (!float.TryParse(match.Groups["Z"].Value, numberStyle, CultureInfo.CurrentCulture, out z))
                 throw new FormatException("Could not parse Z coordinate \"{0}\" as a decimal.".FormatString(match.Groups["Z"]));
 
             return new Vertex()
@@ -103,9 +103,9 @@ namespace QuantumConcepts.Formats.StereoLithography
             //Convert the read bytes to their numeric representation.
             return new Vertex()
             {
-                X = (decimal)BitConverter.ToSingle(data, 0),
-                Y = (decimal)BitConverter.ToSingle(data, floatSize),
-                Z = (decimal)BitConverter.ToSingle(data, (floatSize * 2))
+                X = BitConverter.ToSingle(data, 0),
+                Y = BitConverter.ToSingle(data, floatSize),
+                Z = BitConverter.ToSingle(data, (floatSize * 2))
             };
         }
 

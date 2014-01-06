@@ -8,12 +8,15 @@ using QuantumConcepts.Formats.StereoLithography;
 using QuantumConcepts.Common.Extensions;
 using System.Linq;
 using QuantumConcepts.Common.IO;
+using System.Diagnostics;
 
 namespace QuantumConcepts.Formats.StereoLithography.Test
 {
     [TestClass]
     public class STLTests
     {
+        private const string NetfabbPath = @"%AppData%\Roaming\netfabb\netfabb.exe";
+
         [TestMethod]
         [Description("Ensures that both string and binary STL files can be read by the STLDocument.Read method.")]
         public void FromStringAndBinary()
@@ -131,22 +134,14 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
 
             using (MemoryStream stream = new MemoryStream())
             {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    stl1.Write(writer);
-                }
-
+                stl1.WriteText(stream);
                 stl1Data = stream.ToArray();
                 stl1String = Encoding.ASCII.GetString(stl1Data);
             }
 
             using (MemoryStream stream = new MemoryStream(stl1Data))
             {
-                using (StreamReader reader = new StreamReader(stream, Encoding.ASCII, true, 1024, true))
-                {
-                    stl2 = STLDocument.Read(reader);
-                }
-
+                stl2 = STLDocument.Read(stream);
                 stl2Data = stream.ToArray();
                 stl2String = Encoding.ASCII.GetString(stl2Data);
             }
@@ -174,21 +169,13 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
 
             using (MemoryStream stream = new MemoryStream())
             {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    stl1.Write(writer);
-                }
-
+                stl1.WriteBinary(stream);
                 stl1Data = stream.ToArray();
             }
 
             using (MemoryStream stream = new MemoryStream(stl1Data))
             {
-                using (StreamReader reader = new StreamReader(stream, Encoding.ASCII, true, 1024, true))
-                {
-                    stl2 = STLDocument.Read(reader);
-                }
-
+                stl2 = STLDocument.Read(stream);
                 stl2Data = stream.ToArray();
             }
 
@@ -318,6 +305,34 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
             stl1.AppendFacets(stl2);
 
             ValidateSTL(stl1, facetCount);
+        }
+
+        [TestMethod]
+        [Description("Ensures that saving to a file functions correctly.")]
+        public void SaveToFile()
+        {
+            STLDocument stl = null;
+            STLDocument stlText = null;
+            STLDocument stlBinary = null;
+            string stlTextPath = Path.GetTempFileName();
+            string stlBinaryPath = Path.GetTempFileName();
+
+            using (Stream stream = GetData("ASCII.stl"))
+                stl = STLDocument.Read(stream);
+
+            stl.SaveAsText(stlTextPath);
+            stlText = STLDocument.Open(stlTextPath);
+            stl.SaveAsBinary(stlBinaryPath);
+            stlBinary = STLDocument.Open(stlBinaryPath);
+
+            ValidateSTL(stlText);
+            ValidateSTL(stlBinary);
+
+            try { File.Delete(stlTextPath); }
+            catch { }
+
+            try { File.Delete(stlBinaryPath); }
+            catch { }
         }
 
         private Stream GetData(string filename)

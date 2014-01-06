@@ -19,7 +19,7 @@ namespace QuantumConcepts.Formats.StereoLithography
 
         /// <summary>Additional data attached to the facet.</summary>
         /// <remarks>Depending on the source of the STL, this could be used to indicate such things as the color of the <see cref="Facet"/>. This functionality only exists in binary STLs.</remarks>
-        public int AttributeByteCount { get; set; }
+        public UInt16 AttributeByteCount { get; set; }
 
         /// <summary>Creates a new, empty <see cref="Facet"/>.</summary>
         public Facet()
@@ -31,7 +31,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <param name="normal">The directionality of the <see cref="Facet"/>.</param>
         /// <param name="vertices">The location of the <see cref="Facet"/>.</param>
         /// <param name="attributeByteCount">Additional data to attach to the <see cref="Facet"/>.</param>
-        public Facet(Normal normal, IEnumerable<Vertex> vertices, int attributeByteCount)
+        public Facet(Normal normal, IEnumerable<Vertex> vertices, UInt16 attributeByteCount)
             : this()
         {
             this.Normal = normal;
@@ -83,7 +83,7 @@ namespace QuantumConcepts.Formats.StereoLithography
             facet.Vertices = Enumerable.Range(0, 3).Select(o => Vertex.Read(reader)).ToList();
 
             //Read the attribute byte count.
-            facet.AttributeByteCount = reader.ReadInt16();
+            facet.AttributeByteCount = reader.ReadUInt16();
 
             return facet;
         }

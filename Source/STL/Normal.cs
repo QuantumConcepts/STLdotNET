@@ -14,7 +14,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         public Normal() : base() { }
 
         /// <summary>Creates a new <see cref="Normal"/> using the provided coordinates.</summary>
-        public Normal(decimal x, decimal y, decimal z) : base(x, y, z) { }
+        public Normal(float x, float y, float z) : base(x, y, z) { }
 
         /// <summary>Reads a single <see cref="Normal"/> from the <paramref name="reader"/>.</summary>
         /// <param name="reader">The reader which contains a <see cref="Normal"/> to be read at the current position</param>

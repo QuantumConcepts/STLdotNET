@@ -94,8 +94,8 @@ namespace QuantumConcepts.Formats.StereoLithography
             }
         }
 
-        /// <summary>Reads the <see cref="STLDocument"/> contained within the <paramref name="stream"/> into a new STL <see cref="STLDocument"/>.</summary>
-        /// <remarks>This method will expects a text-based <see cref="STLDocument"/> to be contained within the <paramref name="reader"/>.</remarks>
+        /// <summary>Reads the STL document contained within the <paramref name="stream"/> into a new <see cref="STLDocument"/>.</summary>
+        /// <remarks>This method expects a text-based STL document to be contained within the <paramref name="reader"/>.</remarks>
         /// <param name="reader">The reader which contains the text-based STL data.</param>
         /// <returns>An <see cref="STLDocument"/> representing the data contained in the stream or null if the stream is empty.</returns>
         public static STLDocument Read(StreamReader reader)
@@ -128,7 +128,31 @@ namespace QuantumConcepts.Formats.StereoLithography
             return stl;
         }
 
-        /// <summary>Reads the <see cref="STLDocument"/> contained within the <paramref name="stream"/> into a new STL <see cref="STLDocument"/>.</summary>
+        /// <summary>Reads the STL document contained within the <paramref name="stl"/> parameter into a new <see cref="STLDocument"/>.</summary>
+        /// <param name="stl">A string which contains the STL data.</param>
+        /// <returns>An <see cref="STLDocument"/> representing the data contained in the <paramref name="stl"/> parameter or null if the parameter is empty.</returns>
+        public static STLDocument Read(string stl)
+        {
+            if (stl.IsNullOrEmpty())
+                return null;
+
+            using (MemoryStream stream = new MemoryStream(Encoding.ASCII.GetBytes(stl)))
+                return Read(stream);
+        }
+
+        /// <summary>Reads the STL document located at the <paramref name="path"/> into a new <see cref="STLDocument"/>.</summary>
+        /// <param name="path">A full path to a file which contains the STL data.</param>
+        /// <returns>An <see cref="STLDocument"/> representing the data contained in the file located at the <paramref name="path"/> specified or null if the parameter is empty.</returns>
+        public static STLDocument Open(string path)
+        {
+            if (path.IsNullOrEmpty())
+                throw new ArgumentNullException("path");
+
+            using (Stream stream = File.OpenRead(path))
+                return Read(stream);
+        }
+
+        /// <summary>Reads the STL document contained within the <paramref name="stream"/> into a new <see cref="STLDocument"/>.</summary>
         /// <remarks>This method will expects a binary-based <see cref="STLDocument"/> to be contained within the <paramref name="reader"/>.</remarks>
         /// <param name="reader">The reader which contains the binary-based STL data.</param>
         /// <returns>An <see cref="STLDocument"/> representing the data contained in the stream or null if the stream is empty.</returns>

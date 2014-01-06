@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuantumConcepts.Formats.StereoLithography;
 using QuantumConcepts.Common.Extensions;
 using System.Linq;
+using QuantumConcepts.Common.IO;
 
 namespace QuantumConcepts.Formats.StereoLithography.Test
 {
@@ -25,19 +26,19 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
                 stlString = STLDocument.Read(stream);
             }
 
-            Assert.IsNotNull(stlString);
+            ValidateSTL(stlString);
 
             using (Stream stream = GetData("Binary.stl"))
             {
                 stlBinary = STLDocument.Read(stream);
             }
 
-            Assert.IsNotNull(stlBinary);
+            ValidateSTL(stlBinary);
         }
 
         [TestMethod]
-        [Description("Ensures that reading string STLs works correctly.")]
-        public void FromString()
+        [Description("Ensures that reading text-based STLs works correctly.")]
+        public void FromText()
         {
             STLDocument stl = null;
 
@@ -49,15 +50,11 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
                 }
             }
 
-            Assert.IsNotNull(stl);
-            Assert.AreEqual(12, stl.Facets.Count);
-
-            foreach (Facet facet in stl.Facets)
-                Assert.AreEqual(3, facet.Vertices.Count);
+            ValidateSTL(stl);
         }
 
         [TestMethod]
-        [Description("Ensures that reading binary STLs works correctly.")]
+        [Description("Ensures that reading binary-based STLs works correctly.")]
         public void FromBinary()
         {
             STLDocument stl = null;
@@ -72,11 +69,45 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
                 }
             }
 
-            Assert.IsNotNull(stl);
-            Assert.AreEqual(12, stl.Facets.Count);
+            ValidateSTL(stl);
+        }
 
-            foreach (Facet facet in stl.Facets)
-                Assert.AreEqual(3, facet.Vertices.Count);
+        [TestMethod]
+        [Description("Ensures that reading STLs from a string works correctly.")]
+        public void FromString()
+        {
+            string stlText = null;
+            STLDocument stl = null;
+
+            using (Stream stream = GetData("ASCII.stl"))
+            using (StreamReader reader = new StreamReader(stream))
+                stlText = reader.ReadToEnd();
+
+            stl = STLDocument.Read(stlText);
+
+            ValidateSTL(stl);
+        }
+
+        [TestMethod]
+        [Description("Ensures that reading STLs from a file works correctly.")]
+        public void FromFile()
+        {
+            STLDocument stl = null;
+
+            using (Stream stream = GetData("ASCII.stl"))
+            {
+                string tempFilePath = Path.GetTempFileName();
+
+                using (TemporaryFileStream tempStream = new TemporaryFileStream(tempFilePath))
+                {
+                    stream.CopyTo(tempStream);
+                    tempStream.Flush();
+                    tempStream.Close();
+                    stl = STLDocument.Open(tempFilePath);
+                }
+            }
+
+            ValidateSTL(stl);
         }
 
         [TestMethod]
@@ -269,6 +300,15 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         private Stream GetData(string filename)
         {
             return Assembly.GetExecutingAssembly().GetManifestResourceStream("QuantumConcepts.Formats.StereoLithography.Test.Data.{0}".FormatString(filename));
+        }
+
+        private void ValidateSTL(STLDocument stl)
+        {
+            Assert.IsNotNull(stl);
+            Assert.AreEqual(12, stl.Facets.Count);
+
+            foreach (Facet facet in stl.Facets)
+                Assert.AreEqual(3, facet.Vertices.Count);
         }
     }
 }

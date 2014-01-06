@@ -39,55 +39,6 @@ namespace QuantumConcepts.Formats.StereoLithography
             this.AttributeByteCount = attributeByteCount;
         }
 
-        /// <summary>Reads a single <see cref="Facet"/> from the <paramref name="reader"/>.</summary>
-        /// <param name="reader">The reader which contains a <see cref="Facet"/> to be read at the current position</param>
-        public static Facet Read(StreamReader reader)
-        {
-            if (reader == null)
-                return null;
-
-            //Create the facet.
-            Facet facet = new Facet();
-
-            //Read the normal.
-            if ((facet.Normal = Normal.Read(reader)) == null)
-                return null;
-
-            //Skip the "outer loop".
-            reader.ReadLine();
-
-            //Read 3 vertices.
-            facet.Vertices = Enumerable.Range(0, 3).Select(o => Vertex.Read(reader)).ToList();
-
-            //Read the "endloop" and "endfacet".
-            reader.ReadLine();
-            reader.ReadLine();
-
-            return facet;
-        }
-
-        /// <summary>Reads a single <see cref="Facet"/> from the <paramref name="reader"/>.</summary>
-        /// <param name="reader">The reader which contains a <see cref="Facet"/> to be read at the current position</param>
-        public static Facet Read(BinaryReader reader)
-        {
-            if (reader == null)
-                return null;
-
-            //Create the facet.
-            Facet facet = new Facet();
-
-            //Read the normal.
-            facet.Normal = Normal.Read(reader);
-
-            //Read 3 vertices.
-            facet.Vertices = Enumerable.Range(0, 3).Select(o => Vertex.Read(reader)).ToList();
-
-            //Read the attribute byte count.
-            facet.AttributeByteCount = reader.ReadUInt16();
-
-            return facet;
-        }
-
         /// <summary>Writes the <see cref="Facet"/> as text to the <paramref name="writer"/>.</summary>
         /// <param name="writer">The writer to which the <see cref="Facet"/> will be written at the current position.</param>
         public void Write(StreamWriter writer)
@@ -142,6 +93,55 @@ namespace QuantumConcepts.Formats.StereoLithography
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>Reads a single <see cref="Facet"/> from the <paramref name="reader"/>.</summary>
+        /// <param name="reader">The reader which contains a <see cref="Facet"/> to be read at the current position</param>
+        public static Facet Read(StreamReader reader)
+        {
+            if (reader == null)
+                return null;
+
+            //Create the facet.
+            Facet facet = new Facet();
+
+            //Read the normal.
+            if ((facet.Normal = Normal.Read(reader)) == null)
+                return null;
+
+            //Skip the "outer loop".
+            reader.ReadLine();
+
+            //Read 3 vertices.
+            facet.Vertices = Enumerable.Range(0, 3).Select(o => Vertex.Read(reader)).ToList();
+
+            //Read the "endloop" and "endfacet".
+            reader.ReadLine();
+            reader.ReadLine();
+
+            return facet;
+        }
+
+        /// <summary>Reads a single <see cref="Facet"/> from the <paramref name="reader"/>.</summary>
+        /// <param name="reader">The reader which contains a <see cref="Facet"/> to be read at the current position</param>
+        public static Facet Read(BinaryReader reader)
+        {
+            if (reader == null)
+                return null;
+
+            //Create the facet.
+            Facet facet = new Facet();
+
+            //Read the normal.
+            facet.Normal = Normal.Read(reader);
+
+            //Read 3 vertices.
+            facet.Vertices = Enumerable.Range(0, 3).Select(o => Vertex.Read(reader)).ToList();
+
+            //Read the attribute byte count.
+            facet.AttributeByteCount = reader.ReadUInt16();
+
+            return facet;
         }
     }
 }

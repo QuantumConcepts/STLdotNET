@@ -44,5 +44,12 @@ namespace QuantumConcepts.Formats.StereoLithography
         {
             vertices.ForEach(v => v.Shift(shift));
         }
+
+        /// <summary>Inverts the <see cref="Normal"/> within the <paramref name="facets"/> enumerable.</summary>
+        /// <param name="facets">The facets to invert.</param>
+        public static void Invert(this IEnumerable<Facet> facets)
+        {
+            facets.ForEach(f => f.Normal.Invert());
+        }
     }
 }

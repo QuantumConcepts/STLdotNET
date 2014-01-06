@@ -16,6 +16,20 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <summary>Creates a new <see cref="Normal"/> using the provided coordinates.</summary>
         public Normal(float x, float y, float z) : base(x, y, z) { }
 
+        /// <summary>Flips the normal so it faces the opposite direction.</summary>
+        public void Invert()
+        {
+            this.X *= -1;
+            this.Y *= -1;
+            this.Z *= -1;
+        }
+
+        /// <summary>Returns the string representation of this <see cref="Normal"/>.</summary>
+        public override string ToString()
+        {
+            return "normal {0} {1} {2}".FormatString(this.X, this.Y, this.Z);
+        }
+
         /// <summary>Reads a single <see cref="Normal"/> from the <paramref name="reader"/>.</summary>
         /// <param name="reader">The reader which contains a <see cref="Normal"/> to be read at the current position</param>
         public static Normal Read(StreamReader reader)
@@ -45,12 +59,6 @@ namespace QuantumConcepts.Formats.StereoLithography
                 Y = vertex.Y,
                 Z = vertex.Z
             };
-        }
-
-        /// <summary>Returns the string representation of this <see cref="Normal"/>.</summary>
-        public override string ToString()
-        {
-            return "normal {0} {1} {2}".FormatString(this.X, this.Y, this.Z);
         }
     }
 }

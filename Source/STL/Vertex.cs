@@ -45,6 +45,37 @@ namespace QuantumConcepts.Formats.StereoLithography
             this.Z += shift.Z;
         }
 
+        /// <summary>Writes the <see cref="Vertex"/> as text to the <paramref name="writer"/>.</summary>
+        /// <param name="writer">The writer to which the <see cref="Vertex"/> will be written at the current position.</param>
+        public void Write(StreamWriter writer)
+        {
+            writer.WriteLine("\t\t\t{0}".FormatString(this.ToString()));
+        }
+
+        /// <summary>Writes the <see cref="Vertex"/> as binary to the <paramref name="writer"/>.</summary>
+        /// <param name="writer">The writer to which the <see cref="Vertex"/> will be written at the current position.</param>
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(this.X);
+            writer.Write(this.Y);
+            writer.Write(this.Z);
+        }
+
+        /// <summary>Returns the string representation of this <see cref="Vertex"/>.</summary>
+        public override string ToString()
+        {
+            return "vertex {0} {1} {2}".FormatString(this.X, this.Y, this.Z);
+        }
+
+        /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>
+        /// <param name="other">The <see cref="Vertex"/> to which to compare.</param>
+        public bool Equals(Vertex other)
+        {
+            return (this.X.Equals(other.X)
+                    && this.Y.Equals(other.Y)
+                    && this.Z.Equals(other.Z));
+        }
+
         /// <summary>Reads a single <see cref="Vertex"/> from the <paramref name="reader"/>.</summary>
         /// <param name="reader">The reader which contains a <see cref="Vertex"/> to be read at the current position</param>
         public static Vertex Read(StreamReader reader)
@@ -116,37 +147,6 @@ namespace QuantumConcepts.Formats.StereoLithography
                 Y = BitConverter.ToSingle(data, floatSize),
                 Z = BitConverter.ToSingle(data, (floatSize * 2))
             };
-        }
-
-        /// <summary>Writes the <see cref="Vertex"/> as text to the <paramref name="writer"/>.</summary>
-        /// <param name="writer">The writer to which the <see cref="Vertex"/> will be written at the current position.</param>
-        public void Write(StreamWriter writer)
-        {
-            writer.WriteLine("\t\t\t{0}".FormatString(this.ToString()));
-        }
-
-        /// <summary>Writes the <see cref="Vertex"/> as binary to the <paramref name="writer"/>.</summary>
-        /// <param name="writer">The writer to which the <see cref="Vertex"/> will be written at the current position.</param>
-        public void Write(BinaryWriter writer)
-        {
-            writer.Write(this.X);
-            writer.Write(this.Y);
-            writer.Write(this.Z);
-        }
-
-        /// <summary>Returns the string representation of this <see cref="Vertex"/>.</summary>
-        public override string ToString()
-        {
-            return "vertex {0} {1} {2}".FormatString(this.X, this.Y, this.Z);
-        }
-
-        /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>
-        /// <param name="other">The <see cref="Vertex"/> to which to compare.</param>
-        public bool Equals(Vertex other)
-        {
-            return (this.X.Equals(other.X)
-                    && this.Y.Equals(other.Y)
-                    && this.Z.Equals(other.Z));
         }
     }
 }

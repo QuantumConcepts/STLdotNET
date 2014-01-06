@@ -360,6 +360,32 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
             }
         }
 
+        [TestMethod]
+        [Description("Ensures that facet (normal) inversion functions correctly.")]
+        public void InvertFacets()
+        {
+            STLDocument stl1 = null;
+            STLDocument stl2 = null;
+
+            using (Stream stream = GetData("ASCII.stl"))
+            {
+                stl1 = STLDocument.Read(stream);
+                stl2 = STLDocument.Read(stream);
+            }
+
+            stl2.Facets.Invert();
+
+            for (int f = 0; f < stl1.Facets.Count; f++)
+            {
+                for (int v = 0; v < stl1.Facets[f].Vertices.Count; v++)
+                {
+                    Assert.AreEqual(stl1.Facets[f].Normal.X, (stl2.Facets[f].Normal.X * -1));
+                    Assert.AreEqual(stl1.Facets[f].Normal.Y, (stl2.Facets[f].Normal.Y * -1));
+                    Assert.AreEqual(stl1.Facets[f].Normal.Z, (stl2.Facets[f].Normal.Z * -1));
+                }
+            }
+        }
+
         private Stream GetData(string filename)
         {
             return Assembly.GetExecutingAssembly().GetManifestResourceStream("QuantumConcepts.Formats.StereoLithography.Test.Data.{0}".FormatString(filename));

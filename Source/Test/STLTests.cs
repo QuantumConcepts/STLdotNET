@@ -43,7 +43,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
 
             using (Stream stream = GetData("ASCII.stl"))
             {
-                using (StreamReader reader = new StreamReader(stream, Encoding.ASCII, true, 1024, true))
+                using (StreamReader reader = new StreamReader(stream))
                 {
                     stl = STLDocument.Read(reader);
                 }
@@ -111,7 +111,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
 
             using (MemoryStream stream = new MemoryStream(stl1Data))
             {
-                using (StreamReader reader = new StreamReader(stream, Encoding.ASCII, true, 1024, true))
+                using (StreamReader reader = new StreamReader(stream))
                 {
                     stl2 = STLDocument.Read(reader);
                 }
@@ -153,7 +153,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
 
             using (MemoryStream stream = new MemoryStream(stl1Data))
             {
-                using (StreamReader reader = new StreamReader(stream, Encoding.ASCII, true, 1024, true))
+                using (StreamReader reader = new StreamReader(stream))
                 {
                     stl2 = STLDocument.Read(reader);
                 }
@@ -174,9 +174,13 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
             STLDocument stlBinaryFrom = null;
             STLDocument stlBinaryTo = null;
 
-            using (Stream inStream = GetData("ASCII.stl"), outStream = new MemoryStream())
+            using (Stream inStream = GetData("ASCII.stl"))
             {
                 stlStringFrom = STLDocument.Read(inStream);
+            }
+
+            using (Stream inStream = GetData("ASCII.stl"), outStream = new MemoryStream())
+            {
                 stlStringTo = STLDocument.CopyAsText(inStream, outStream);
             }
 
@@ -184,9 +188,13 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
             Assert.IsNotNull(stlStringTo);
             Assert.IsTrue(stlStringFrom.Equals(stlStringTo));
 
-            using (Stream inStream = GetData("Binary.stl"), outStream = new MemoryStream())
+            using (Stream inStream = GetData("Binary.stl"))
             {
                 stlBinaryFrom = STLDocument.Read(inStream);
+            }
+
+            using (Stream inStream = GetData("Binary.stl"), outStream = new MemoryStream())
+            {
                 stlBinaryTo = STLDocument.CopyAsText(inStream, outStream);
             }
 
@@ -204,9 +212,13 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
             STLDocument stlBinaryFrom = null;
             STLDocument stlBinaryTo = null;
 
-            using (Stream inStream = GetData("ASCII.stl"), outStream = new MemoryStream())
+            using (Stream inStream = GetData("ASCII.stl"))
             {
                 stlStringFrom = STLDocument.Read(inStream);
+            }
+
+            using (Stream inStream = GetData("ASCII.stl"), outStream = new MemoryStream())
+            {
                 stlStringTo = STLDocument.CopyAsBinary(inStream, outStream);
             }
 
@@ -214,36 +226,19 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
             Assert.IsNotNull(stlStringTo);
             Assert.IsTrue(stlStringFrom.Equals(stlStringTo));
 
-            using (Stream inStream = GetData("Binary.stl"), outStream = new MemoryStream())
+            using (Stream inStream = GetData("Binary.stl"))
             {
                 stlBinaryFrom = STLDocument.Read(inStream);
+            }
+
+            using (Stream inStream = GetData("Binary.stl"), outStream = new MemoryStream())
+            {
                 stlBinaryTo = STLDocument.CopyAsBinary(inStream, outStream);
             }
 
             Assert.IsNotNull(stlBinaryFrom);
             Assert.IsNotNull(stlBinaryTo);
             Assert.IsTrue(stlBinaryFrom.Equals(stlBinaryTo));
-        }
-
-        [TestMethod]
-        [Description("Ensures that the stream is left open after reading a text-based STL.")]
-        public void StreamLeftOpen()
-        {
-            STLDocument stl = null;
-
-            using (Stream stream = GetData("ASCII.stl"))
-            {
-                stl = STLDocument.Read(stream);
-
-                try
-                {
-                    stream.ReadByte();
-                }
-                catch (ObjectDisposedException)
-                {
-                    Assert.Fail("Stream is closed.");
-                }
-            }
         }
 
         [TestMethod]

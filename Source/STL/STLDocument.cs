@@ -40,6 +40,41 @@ namespace QuantumConcepts.Formats.StereoLithography
             this.Facets = facets.ToList();
         }
 
+        /// <summary>Writes the <see cref="STLDocument"/> as text to the provided <paramref name="writer"/>.</summary>
+        /// <param name="writer">The writer to which the <see cref="STLDocument"/> will be written.</param>
+        public void Write(StreamWriter writer)
+        {
+            //Write the header.
+            writer.WriteLine(this.ToString());
+
+            //Write each facet.
+            this.Facets.ForEach(o => o.Write(writer));
+
+            //Write the footer.
+            writer.Write("end{0}".FormatString(this.ToString()));
+        }
+
+        /// <summary>Writes the <see cref="STLDocument"/> as binary to the provided <paramref name="writer"/>.</summary>
+        /// <param name="writer">The writer to which the <see cref="STLDocument"/> will be written.</param>
+        public void Write(BinaryWriter writer)
+        {
+            //Write the header and facet count.
+            writer.Write("Binary STL created by Quantum Concepts. www.quantumconceptscorp.com");
+            writer.Write(this.Facets.Count);
+
+            //Write each facet.
+            this.Facets.ForEach(o => o.Write(writer));
+        }
+
+        /// <summary>Appends the provided facets to this instance's <see cref="Facets"/>.</summary>
+        /// <remarks>An entire <see cref="STLDocument"/> can be passed to this method and all of the facets which it contains will be appended to this instance.</remarks>
+        /// <param name="facets">The facets to append.</param>
+        public void AppendFacets(IEnumerable<Facet> facets)
+        {
+            foreach (Facet facet in facets)
+                this.Facets.Add(facet);
+        }
+
         /// <summary>Determines if the <see cref="STLDocument"/> contained within the <paramref name="stream"/> is text-based.</summary>
         /// <remarks>The <paramref name="stream"/> will be reset to position 0.</remarks>
         /// <param name="stream">The stream which contains the STL data.</param>
@@ -174,32 +209,6 @@ namespace QuantumConcepts.Formats.StereoLithography
                 stl.Facets.Add(currentFacet);
 
             return stl;
-        }
-
-        /// <summary>Writes the <see cref="STLDocument"/> as text to the provided <paramref name="writer"/>.</summary>
-        /// <param name="writer">The writer to which the <see cref="STLDocument"/> will be written.</param>
-        public void Write(StreamWriter writer)
-        {
-            //Write the header.
-            writer.WriteLine(this.ToString());
-
-            //Write each facet.
-            this.Facets.ForEach(o => o.Write(writer));
-
-            //Write the footer.
-            writer.Write("end{0}".FormatString(this.ToString()));
-        }
-
-        /// <summary>Writes the <see cref="STLDocument"/> as binary to the provided <paramref name="writer"/>.</summary>
-        /// <param name="writer">The writer to which the <see cref="STLDocument"/> will be written.</param>
-        public void Write(BinaryWriter writer)
-        {
-            //Write the header and facet count.
-            writer.Write("Binary STL created by Quantum Concepts. www.quantumconceptscorp.com");
-            writer.Write(this.Facets.Count);
-
-            //Write each facet.
-            this.Facets.ForEach(o => o.Write(writer));
         }
 
         /// <summary>Reads the <see cref="STLDocument"/> within the <paramref name="inStream"/> as text into the <paramref name="outStream"/>.</summary>

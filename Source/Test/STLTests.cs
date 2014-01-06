@@ -297,15 +297,38 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
             Assert.IsTrue(stls[0].Equals(stls[1]));
         }
 
+        [TestMethod]
+        [Description("Ensures that facet appending functions correctly.")]
+        public void AppendFacets()
+        {
+            STLDocument stl1 = null;
+            STLDocument stl2 = null;
+            int facetCount = 0;
+
+            using (Stream stream = GetData("ASCII.stl"))
+            {
+                stl1 = STLDocument.Read(stream);
+                stl2 = STLDocument.Read(stream);
+            }
+
+            ValidateSTL(stl1);
+            ValidateSTL(stl2);
+
+            facetCount = (stl1.Facets.Count + stl2.Facets.Count);
+            stl1.AppendFacets(stl2);
+
+            ValidateSTL(stl1, facetCount);
+        }
+
         private Stream GetData(string filename)
         {
             return Assembly.GetExecutingAssembly().GetManifestResourceStream("QuantumConcepts.Formats.StereoLithography.Test.Data.{0}".FormatString(filename));
         }
 
-        private void ValidateSTL(STLDocument stl)
+        private void ValidateSTL(STLDocument stl, int expectedFacetCount = 12)
         {
             Assert.IsNotNull(stl);
-            Assert.AreEqual(12, stl.Facets.Count);
+            Assert.AreEqual(expectedFacetCount, stl.Facets.Count);
 
             foreach (Facet facet in stl.Facets)
                 Assert.AreEqual(3, facet.Vertices.Count);

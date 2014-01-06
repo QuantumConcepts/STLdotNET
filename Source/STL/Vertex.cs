@@ -36,6 +36,15 @@ namespace QuantumConcepts.Formats.StereoLithography
             this.Z = z;
         }
 
+        /// <summary>Shifts the <paramref name="Vertex"/> by the X, Y and Z values in the <paramref name="shift"/> parameter.</summary>
+        /// <param name="shift">The amount to shift the vertex.</param>
+        public void Shift(Vertex shift)
+        {
+            this.X += shift.X;
+            this.Y += shift.Y;
+            this.Z += shift.Z;
+        }
+
         /// <summary>Reads a single <see cref="Vertex"/> from the <paramref name="reader"/>.</summary>
         /// <param name="reader">The reader which contains a <see cref="Vertex"/> to be read at the current position</param>
         public static Vertex Read(StreamReader reader)

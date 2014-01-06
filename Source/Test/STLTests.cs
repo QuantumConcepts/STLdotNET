@@ -15,8 +15,6 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
     [TestClass]
     public class STLTests
     {
-        private const string NetfabbPath = @"%AppData%\Roaming\netfabb\netfabb.exe";
-
         [TestMethod]
         [Description("Ensures that both string and binary STL files can be read by the STLDocument.Read method.")]
         public void FromStringAndBinary()
@@ -333,6 +331,33 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
 
             try { File.Delete(stlBinaryPath); }
             catch { }
+        }
+
+        [TestMethod]
+        [Description("Ensures that facet (vertex) shifting functions correctly.")]
+        public void ShiftFacets()
+        {
+            STLDocument stl1 = null;
+            STLDocument stl2 = null;
+            Vertex shift = new Vertex(100, -100, 50);
+
+            using (Stream stream = GetData("ASCII.stl"))
+            {
+                stl1 = STLDocument.Read(stream);
+                stl2 = STLDocument.Read(stream);
+            }
+
+            stl2.Facets.Shift(shift);
+
+            for (int f = 0; f < stl1.Facets.Count; f++)
+            {
+                for (int v = 0; v < stl1.Facets[f].Vertices.Count; v++)
+                {
+                    Assert.AreEqual(stl1.Facets[f].Vertices[v].X, stl2.Facets[f].Vertices[v].X - shift.X);
+                    Assert.AreEqual(stl1.Facets[f].Vertices[v].Y, stl2.Facets[f].Vertices[v].Y - shift.Y);
+                    Assert.AreEqual(stl1.Facets[f].Vertices[v].Z, stl2.Facets[f].Vertices[v].Z - shift.Z);
+                }
+            }
         }
 
         private Stream GetData(string filename)

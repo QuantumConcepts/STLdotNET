@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using QuantumConcepts.Common.Extensions;
 
 namespace QuantumConcepts.Formats.StereoLithography
 {
@@ -24,7 +22,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <param name="shift">The amount to shift each vertex.</param>
         public static void Shift(this IEnumerable<Facet> facets, Vertex shift)
         {
-            facets.ForEach(f => f.Shift(shift));
+            facets.ToList().ForEach(f => f.Shift(shift));
         }
 
         /// <summary>Shifts the <paramref name="vertices"/> enumerable by <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/>.</summary>
@@ -42,14 +40,14 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <param name="shift">The amount to shift each vertex.</param>
         public static void Shift(this IEnumerable<Vertex> vertices, Vertex shift)
         {
-            vertices.ForEach(v => v.Shift(shift));
+            vertices.ToList().ForEach(v => v.Shift(shift));
         }
 
         /// <summary>Inverts the <see cref="Normal"/> within the <paramref name="facets"/> enumerable.</summary>
         /// <param name="facets">The facets to invert.</param>
         public static void Invert(this IEnumerable<Facet> facets)
         {
-            facets.ForEach(f => f.Normal.Invert());
+            facets.ToList().ForEach(f => f.Normal.Invert());
         }
     }
 }

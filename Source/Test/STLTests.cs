@@ -5,9 +5,7 @@ using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuantumConcepts.Formats.StereoLithography;
-using QuantumConcepts.Common.Extensions;
 using System.Linq;
-using QuantumConcepts.Common.IO;
 using System.Diagnostics;
 
 namespace QuantumConcepts.Formats.StereoLithography.Test
@@ -45,7 +43,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
 
             using (Stream stream = GetData("ASCII.stl"))
             {
-                using (StreamReader reader = new StreamReader(stream, Encoding.ASCII, true, 1024, true))
+                using (StreamReader reader = new StreamReader(stream, Encoding.ASCII, true, 1024))
                 {
                     stl = STLDocument.Read(reader);
                 }
@@ -93,21 +91,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         [Description("Ensures that reading STLs from a file works correctly.")]
         public void FromFile()
         {
-            STLDocument stl = null;
-
-            using (Stream stream = GetData("ASCII.stl"))
-            {
-                string tempFilePath = Path.GetTempFileName();
-
-                using (TemporaryFileStream tempStream = new TemporaryFileStream(tempFilePath))
-                {
-                    stream.CopyTo(tempStream);
-                    tempStream.Flush();
-                    tempStream.Close();
-                    stl = STLDocument.Open(tempFilePath);
-                }
-            }
-
+            STLDocument stl = STLDocument.Open(@"Data\ASCII.stl");
             ValidateSTL(stl);
         }
 
@@ -283,6 +267,53 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         }
 
         [TestMethod]
+        [Description("Tests that facet ordering isn't important in equality checks")]
+        public void EqualityUnorderedFacets()
+        {
+            Facet a = new Facet(new Normal(0, 0, 1), 
+                new Vertex[] { new Vertex(0, 0, 0), new Vertex(1, 0, 0), new Vertex(0, 1, 0) }, 0);
+            
+            Facet b = new Facet(new Normal(0, 0, 1),
+                new Vertex[] { new Vertex(1, 0, 0), new Vertex(1, 1, 0), new Vertex(0, 1, 0) }, 0);
+            
+            Facet c = new Facet(new Normal(1, 0, 0),
+                new Vertex[] { new Vertex(0, 0, 0), new Vertex(0, 1, 0), new Vertex(0, 0, 1) }, 0);
+
+            Facet a_reversed_normal = new Facet(new Normal(0, 0, -1), 
+                new Vertex[] { new Vertex(0, 0, 0), new Vertex(1, 0, 0), new Vertex(0, 1, 0) }, 0);
+
+            var stl1 = new STLDocument();
+            var stl2 = new STLDocument();
+            stl1.AppendFacets(new Facet[] { a, b, c });
+            stl2.AppendFacets(new Facet[] { c, b, a });
+
+            Assert.IsTrue(stl1.Equals(stl2), "Comparing two STLDocument's with the same facets in a different order should return true");
+
+            stl2 = new STLDocument();
+            stl2.AppendFacets(new Facet[]{a_reversed_normal, b, c});
+
+            Assert.IsFalse(stl1.Equals(stl2), "Comparing facets with a reversed normal should result in a false comparison");
+        }
+
+        [TestMethod]
+        [Description("Tests that vertex ordering is important in equality checks")]
+        public void EqualityUnorderedVertices()
+        {
+            Facet a = new Facet(new Normal(0, 0, 1),
+                new Vertex[] { new Vertex(0, 0, 0), new Vertex(1, 0, 0), new Vertex(0, 1, 0) }, 0);
+
+            Facet b = new Facet(new Normal(0, 0, 1),
+                new Vertex[] { new Vertex(1, 0, 0), new Vertex(0, 1, 0), new Vertex(0, 0, 0) }, 0);
+
+            var stl1 = new STLDocument();
+            var stl2 = new STLDocument();
+            stl1.AppendFacets(new Facet[] { a });
+            stl2.AppendFacets(new Facet[] { b });
+
+            Assert.IsFalse(stl1.Equals(stl2), "STLDocument's with vertices in different orders should not be equal");
+        }
+
+        [TestMethod]
         [Description("Ensures that facet appending functions correctly.")]
         public void AppendFacets()
         {
@@ -388,7 +419,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
 
         private Stream GetData(string filename)
         {
-            return Assembly.GetExecutingAssembly().GetManifestResourceStream("QuantumConcepts.Formats.StereoLithography.Test.Data.{0}".FormatString(filename));
+            return Assembly.GetExecutingAssembly().GetManifestResourceStream(string.Format("QuantumConcepts.Formats.StereoLithography.Test.Data.{0}", filename));
         }
 
         private void ValidateSTL(STLDocument stl, int expectedFacetCount = 12)

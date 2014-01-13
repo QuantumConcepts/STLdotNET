@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using QuantumConcepts.Common.Extensions;
 
 namespace QuantumConcepts.Formats.StereoLithography
 {
@@ -48,7 +47,7 @@ namespace QuantumConcepts.Formats.StereoLithography
             writer.WriteLine("\t\touter loop");
 
             //Write each vertex.
-            this.Vertices.ForEach(o => o.Write(writer));
+            this.Vertices.ToList().ForEach(o => o.Write(writer));
 
             writer.WriteLine("\t\tendloop");
             writer.WriteLine("\tendfacet");
@@ -62,7 +61,7 @@ namespace QuantumConcepts.Formats.StereoLithography
             this.Normal.Write(writer);
 
             //Write each vertex.
-            this.Vertices.ForEach(o => o.Write(writer));
+            this.Vertices.ToList().ForEach(o => o.Write(writer));
 
             //Write the attribute byte count.
             writer.Write(this.AttributeByteCount);
@@ -71,16 +70,16 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <summary>Returns the string representation of this <see cref="Facet"/>.</summary>
         public override string ToString()
         {
-            return "facet {0}".FormatString(this.Normal);
+            return string.Format("facet {0}", this.Normal);
         }
 
         /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>
         /// <param name="other">The <see cref="Facet"/> to which to compare.</param>
         public bool Equals(Facet other)
         {
-            return (this.Normal.Equals(other.Normal)
-                    && this.Vertices.Count == other.Vertices.Count
-                    && this.Vertices.All((i, o) => o.Equals(other.Vertices[i])));
+            return (this.Normal.Equals(other.Normal) 
+                && this.Vertices.Count == other.Vertices.Count
+                && Vertices.Where((vertex, index) => vertex.Equals(other.Vertices[index])).Count() == Vertices.Count);
         }
 
         /// <summary>Iterates through the <see cref="Vertices"/> collection.</summary>
@@ -142,6 +141,22 @@ namespace QuantumConcepts.Formats.StereoLithography
             facet.AttributeByteCount = reader.ReadUInt16();
 
             return facet;
+        }
+
+        /// <summary>
+        /// Compute a hash code dependent on vertex & normal values of the face.
+        /// This is necessary for effecient & accurate comparisons to be done
+        /// with methods like List.Except.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            int hash = Normal.GetHashCode();
+            foreach (var vertex in Vertices)
+            {
+                hash ^= vertex.GetHashCode();
+            }
+            return hash;
         }
     }
 }

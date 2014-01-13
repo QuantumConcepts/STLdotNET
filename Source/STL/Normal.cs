@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using QuantumConcepts.Common.Extensions;
 
 namespace QuantumConcepts.Formats.StereoLithography
 {
@@ -27,7 +26,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <summary>Returns the string representation of this <see cref="Normal"/>.</summary>
         public override string ToString()
         {
-            return "normal {0} {1} {2}".FormatString(this.X, this.Y, this.Z);
+            return string.Format("normal {0} {1} {2}", this.X, this.Y, this.Z);
         }
 
         /// <summary>Reads a single <see cref="Normal"/> from the <paramref name="reader"/>.</summary>

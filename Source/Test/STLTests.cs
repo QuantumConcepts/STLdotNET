@@ -120,8 +120,8 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
                 new Facet(new Normal( 0, 0, 1), new List<Vertex>()
                 {
                     new Vertex( 0, 0, 0),
-                    new Vertex(-10, -10, 0),
-                    new Vertex(-10, 0, 0)
+                    new Vertex(-10.123f, -10, 0),
+                    new Vertex(-10.123f, 0, 0)
                 }, 0)
             });
             STLDocument stl2 = null;

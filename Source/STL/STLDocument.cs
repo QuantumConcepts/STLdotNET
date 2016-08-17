@@ -146,6 +146,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <summary>Reads the <see cref="STLDocument"/> contained within the <paramref name="stream"/> into a new <see cref="STLDocument"/>.</summary>
         /// <remarks>This method will determine how to read the <see cref="STLDocument"/> (whether to read it as text or binary data).</remarks>
         /// <param name="stream">The stream which contains the STL data.</param>
+        /// <param name="tryBinaryIfTextFailed">Set to true to try read as binary if reading as text results in zero facets</param>
         /// <returns>An <see cref="STLDocument"/> representing the data contained in the stream or null if the stream is empty.</returns>
         public static STLDocument Read(Stream stream,bool tryBinaryIfTextFailed=false)
         {

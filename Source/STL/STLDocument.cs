@@ -147,22 +147,29 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <remarks>This method will determine how to read the <see cref="STLDocument"/> (whether to read it as text or binary data).</remarks>
         /// <param name="stream">The stream which contains the STL data.</param>
         /// <returns>An <see cref="STLDocument"/> representing the data contained in the stream or null if the stream is empty.</returns>
-        public static STLDocument Read(Stream stream)
+        public static STLDocument Read(Stream stream,bool tryBinaryIfTextFailed=false)
         {
             //Determine if the stream contains a text-based or binary-based <see cref="STLDocument"/>, and then read it.
-            if (IsText(stream))
+            var isText = IsText(stream);
+            STLDocument textStlDocument = null;
+            if (isText)
             {
                 using (StreamReader reader = new StreamReader(stream, Encoding.ASCII, true, DefaultBufferSize, true))
                 {
-                    return Read(reader);
+                    textStlDocument = Read(reader);
                 }
+                
+                if (textStlDocument.Facets.Count > 0 || !tryBinaryIfTextFailed) return textStlDocument;
+                stream.Seek(0, SeekOrigin.Begin);
             }
-            else
+
+            //Try binary if zero Facets were read and tryBinaryIfTextFailed==true
+            using (BinaryReader reader = new BinaryReader(stream, Encoding.ASCII, true))
             {
-                using (BinaryReader reader = new BinaryReader(stream, Encoding.ASCII, true))
-                {
-                    return Read(reader);
-                }
+                var binaryStlDocument = Read(reader);
+
+                //return text reading result if binary reading also failed and tryBinaryIfTextFailed==true
+                return (binaryStlDocument.Facets.Count>0 || !isText)?binaryStlDocument:textStlDocument;
             }
         }
 

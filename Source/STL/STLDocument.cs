@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using QuantumConcepts.Common.Extensions;
+using QuantumConcepts.Formats.StereoLithography;
 
 namespace QuantumConcepts.Formats.StereoLithography
 {
@@ -53,7 +53,7 @@ namespace QuantumConcepts.Formats.StereoLithography
                 this.Facets.ForEach(o => o.Write(writer));
 
                 //Write the footer.
-                writer.Write("end{0}".FormatString(this.ToString()));
+                writer.Write("end{0}".Interpolate(this.ToString()));
             }
         }
 
@@ -131,7 +131,7 @@ namespace QuantumConcepts.Formats.StereoLithography
             //Read the header as ASCII.
             header = Encoding.ASCII.GetString(buffer);
 
-            return solid.EqualsIgnoreCase(header);
+            return solid.Equals(header, StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>Determines if the <see cref="STLDocument"/> contained within the <paramref name="stream"/> is binary-based.</summary>
@@ -193,7 +193,7 @@ namespace QuantumConcepts.Formats.StereoLithography
 
             //Check the header.
             if (!headerMatch.Success)
-                throw new FormatException("Invalid STL header, expected \"solid [name]\" but found \"{0}\".".FormatString(header));
+                throw new FormatException("Invalid STL header, expected \"solid [name]\" but found \"{0}\".".Interpolate(header));
 
             //Create the STL and extract the name (optional).
             stl = new STLDocument()
@@ -285,7 +285,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <summary>Returns the header representation of this <see cref="STLDocument"/>.</summary>
         public override string ToString()
         {
-            return "solid {0}".FormatString(this.Name);
+            return "solid {0}".Interpolate(this.Name);
         }
 
         /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>

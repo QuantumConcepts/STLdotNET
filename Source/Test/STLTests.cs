@@ -1,14 +1,10 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QuantumConcepts.Formats.StereoLithography;
-using QuantumConcepts.Common.Extensions;
-using System.Linq;
-using QuantumConcepts.Common.IO;
-using System.Diagnostics;
 
 namespace QuantumConcepts.Formats.StereoLithography.Test
 {
@@ -95,17 +91,22 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         {
             STLDocument stl = null;
 
-            using (Stream stream = GetData("ASCII.stl"))
+            using (Stream inStream = GetData("ASCII.stl"))
             {
                 string tempFilePath = Path.GetTempFileName();
 
-                using (TemporaryFileStream tempStream = new TemporaryFileStream(tempFilePath))
+                using (var outStream = File.Create(tempFilePath))
                 {
-                    stream.CopyTo(tempStream);
-                    tempStream.Flush();
-                    tempStream.Close();
-                    stl = STLDocument.Open(tempFilePath);
+                    inStream.CopyTo(outStream);
                 }
+
+                stl = STLDocument.Open(tempFilePath);
+
+                try
+                {
+                    File.Delete(tempFilePath);
+                }
+                catch { /* Ignore. */ }
             }
 
             ValidateSTL(stl);
@@ -388,7 +389,7 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
 
         private Stream GetData(string filename)
         {
-            return Assembly.GetExecutingAssembly().GetManifestResourceStream("QuantumConcepts.Formats.StereoLithography.Test.Data.{0}".FormatString(filename));
+            return Assembly.GetExecutingAssembly().GetManifestResourceStream("QuantumConcepts.Formats.StereoLithography.Test.Data.{0}".Interpolate(filename));
         }
 
         private void ValidateSTL(STLDocument stl, int expectedFacetCount = 12)

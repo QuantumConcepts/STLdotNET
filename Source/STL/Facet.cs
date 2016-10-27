@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using QuantumConcepts.Common.Extensions;
+using QuantumConcepts.Formats.StereoLithography;
 
 namespace QuantumConcepts.Formats.StereoLithography
 {
@@ -71,7 +71,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <summary>Returns the string representation of this <see cref="Facet"/>.</summary>
         public override string ToString()
         {
-            return "facet {0}".FormatString(this.Normal);
+            return "facet {0}".Interpolate(this.Normal);
         }
 
         /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>

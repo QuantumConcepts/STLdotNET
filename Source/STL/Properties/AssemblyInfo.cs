@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("STL Format Reader and Writer")]
 [assembly: AssemblyDescription("Handles reading and writing the STL format.")]
@@ -8,5 +6,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("STL Format Reader and Writer")]
 [assembly: AssemblyCopyright("Copyright © Quantum Concepts Corporation")]
 [assembly: AssemblyTrademark("Copyright © Quantum Concepts Corporation")]
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyVersion("1.3.1")]
+[assembly: AssemblyFileVersion("1.3.1")]

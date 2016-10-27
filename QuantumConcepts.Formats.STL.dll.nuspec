@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>QuantumConcepts.Formats.STL</id>
-    <version>1.2.0.0</version>
+    <version>1.3.1</version>
     <title>Quantum Concepts STLdotNET</title>
     <authors>Quantum Concepts</authors>
     <owners>Quantum Concepts</owners>
@@ -14,12 +14,9 @@
     <releaseNotes>.NET 4.5; fixed binary writing of STLs; numerous enhancements. More info here: https://github.com/QuantumConcepts/STLdotNET/issues?milestone=2&amp;page=1&amp;state=closed</releaseNotes>
     <copyright>Copyright 2014 Quantum Concepts Corporation, released under the GNU Affero General Public License./</copyright>
     <tags>3d reprap stl</tags>
-    <dependencies>
-      <dependency id="QuantumConcepts.Common" version="1.0" />
-    </dependencies>
   </metadata>
 
   <files>
-    <file src="Source\STL\bin\Release\QuantumConcepts.Formats.STL.*" target="lib\net451"/>
+    <file src="Source\STL\bin\Release\QuantumConcepts.Formats.StereoLithography.*" target="lib\net451"/>
   </files>
 </package>

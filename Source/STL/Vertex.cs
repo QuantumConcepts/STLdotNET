@@ -64,7 +64,8 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <summary>Returns the string representation of this <see cref="Vertex"/>.</summary>
         public override string ToString()
         {
-            return "vertex {0} {1} {2}".FormatString(this.X, this.Y, this.Z);
+            //return "vertex {0} {1} {2}".FormatString(this.X, this.Y, this.Z);
+            return String.Format(CultureInfo.InvariantCulture, "vertex {0} {1} {2}", this.X, this.Y, this.Z);
         }
 
         /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>
@@ -103,13 +104,13 @@ namespace QuantumConcepts.Formats.StereoLithography
                 return null;
 
             //Parse the three coordinates.
-            if (!float.TryParse(match.Groups["X"].Value, numberStyle, CultureInfo.CurrentCulture, out x))
+            if (!float.TryParse(match.Groups["X"].Value, numberStyle, CultureInfo.InvariantCulture, out x))
                 throw new FormatException("Could not parse X coordinate \"{0}\" as a decimal.".FormatString(match.Groups["X"]));
 
-            if (!float.TryParse(match.Groups["Y"].Value, numberStyle, CultureInfo.CurrentCulture, out y))
+            if (!float.TryParse(match.Groups["Y"].Value, numberStyle, CultureInfo.InvariantCulture, out y))
                 throw new FormatException("Could not parse Y coordinate \"{0}\" as a decimal.".FormatString(match.Groups["Y"]));
 
-            if (!float.TryParse(match.Groups["Z"].Value, numberStyle, CultureInfo.CurrentCulture, out z))
+            if (!float.TryParse(match.Groups["Z"].Value, numberStyle, CultureInfo.InvariantCulture, out z))
                 throw new FormatException("Could not parse Z coordinate \"{0}\" as a decimal.".FormatString(match.Groups["Z"]));
 
             return new Vertex()

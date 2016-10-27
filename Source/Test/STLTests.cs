@@ -117,11 +117,11 @@ namespace QuantumConcepts.Formats.StereoLithography.Test
         {
             STLDocument stl1 = new STLDocument("WriteString", new List<Facet>()
             {
-                new Facet(new Normal( 0, 0, 1), new List<Vertex>()
+                new Facet(new Normal( 0.23f, 0, 1), new List<Vertex>()
                 {
                     new Vertex( 0, 0, 0),
-                    new Vertex(-10, -10, 0),
-                    new Vertex(-10, 0, 0)
+                    new Vertex(-10.123f, -10, 0),
+                    new Vertex(-10.123f, 0, 0)
                 }, 0)
             });
             STLDocument stl2 = null;

@@ -118,9 +118,11 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <returns>True if the <see cref="STLDocument"/> is text-based, otherwise false.</returns>
         public static bool IsText(Stream stream)
         {
+            // based on http://www.fabbers.com/tech/STL_Format#Sct_ASCII
             const string solid = "solid";
+            const string facet = "facet";
 
-            byte[] buffer = new byte[5];
+            byte[] buffer = new byte[1024]; //-- one problem is that solid title on the first line could exceed 1024 bytes but this is unlikely
             string header = null;
 
             //Reset the stream to tbe beginning and read the first few bytes, then reset the stream to the beginning again.
@@ -131,7 +133,8 @@ namespace QuantumConcepts.Formats.StereoLithography
             //Read the header as ASCII.
             header = Encoding.ASCII.GetString(buffer);
 
-            return solid.Equals(header, StringComparison.InvariantCultureIgnoreCase);
+            return solid.Equals(header, StringComparison.InvariantCultureIgnoreCase) &&
+                   facet.Equals(header, StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>Determines if the <see cref="STLDocument"/> contained within the <paramref name="stream"/> is binary-based.</summary>

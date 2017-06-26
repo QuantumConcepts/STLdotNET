@@ -12,3 +12,6 @@ This library facilitates the reading and writing of Stereo Lithograph (STL) file
 You may [find the latest release here](https://github.com/QuantumConcepts/STLdotNET/releases). You can download the source and build it yourself, download the binaries from the release, or install the NuGet package:
 
     Install-Package QuantumConcepts.Formats.StereoLithography
+
+##DotNet Core
+A port of this library can be found [Here](https://github.com/Chedberg84/STL.NetCore) that works with DotNet Core.

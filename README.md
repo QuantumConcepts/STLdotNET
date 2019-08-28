@@ -12,3 +12,4 @@ This library facilitates the reading and writing of Stereo Lithograph (STL) file
 You may [find the latest release here](https://github.com/QuantumConcepts/STLdotNET/releases). You can download the source and build it yourself, download the binaries from the release, or install the NuGet package:
 
     Install-Package QuantumConcepts.Formats.StereoLithography
+test

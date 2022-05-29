@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
 using System.Reflection;
 using System.Text;
+using FluentAssertions;
 using Xunit;
 
 namespace QuantumConcepts.Formats.StereoLithography.Test

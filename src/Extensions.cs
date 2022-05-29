@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-
 namespace QuantumConcepts.Formats.StereoLithography
 {
     /// <summary>General STL extendsions for working with facets and vertices.</summary>

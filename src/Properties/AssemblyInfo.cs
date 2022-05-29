@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 [assembly: AssemblyTitle("STL Format Reader and Writer")]
 [assembly: AssemblyDescription("Handles reading and writing the STL format.")]

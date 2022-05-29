@@ -1,11 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using QuantumConcepts.Formats.StereoLithography;
-
 namespace QuantumConcepts.Formats.StereoLithography
 {
     /// <summary>A representation of a facet which is defined by its location (<see cref="Vertices"/>) and directionality (<see cref="Normal"/>).</summary>

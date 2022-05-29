@@ -1,11 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using QuantumConcepts.Formats.StereoLithography;
-using System.Globalization;
-
 namespace QuantumConcepts.Formats.StereoLithography
 {
     /// <summary>A simple XYZ representation of a normal (<see cref="Vertex"/>).</summary>

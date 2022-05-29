@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo 'Initializing Git hooks...'
+ln -s ../../.config/hooks/pre-push ./.git/hooks/pre-push

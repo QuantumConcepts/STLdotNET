@@ -29,10 +29,6 @@ Multiple runtimes are supported:
 
 To contribute a code change, please submit a Pull Request. If you find an issue, please feel free to report it via GitHub.
 
-If you do decide to make a code change, before pushing your branch and opening the Pull Request, please make sure you...
-
-- Run `dotnet build` and fix any errors _and_ warnings.
-- Run `dotnet test` and fix any broken tests.
-- Run `dotnet format` to automatically fix any formatting issues.
+If you do decide to make a code change, before pushing your branch and opening the Pull Request. To ensure consistent, clean formatting, please initialize the Git hooks by running: `./config/init-hooks`
 
 Thank you!

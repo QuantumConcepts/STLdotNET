@@ -1,0 +1,11 @@
+echo 'Running pre-push hook...'
+
+set -e
+
+echo
+echo 'Building and testing...'
+dotnet test
+
+echo
+echo 'Formatting code...'
+dotnet format

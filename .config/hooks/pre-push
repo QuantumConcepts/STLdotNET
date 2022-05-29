@@ -9,3 +9,9 @@ dotnet test
 echo
 echo 'Formatting code...'
 dotnet format
+
+if [ `git status --porcelain=v1 2>/dev/null | wc -l` -gt 0 ]; then
+    echo
+    echo 'Found uncommitted changes (perhaps due to auto-formatting). Please commit or stash your changes and try again.'
+    exit 1
+fi

@@ -4,6 +4,7 @@ using System.Globalization;
 
 namespace QuantumConcepts.Formats.StereoLithography
 {
+    /// <summary>General STL extendsions for working with facets and vertices.</summary>
     public static class Extensions
     {
         /// <summary>Shifts the vertices within the <paramref name="facets"/> enumerable by <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/>.</summary>
@@ -46,7 +47,7 @@ namespace QuantumConcepts.Formats.StereoLithography
         /// <param name="facets">The facets to invert.</param>
         public static void Invert(this IEnumerable<Facet> facets)
         {
-            facets.ForEach(f => f.Normal.Invert());
+            facets.ForEach(f => f?.Normal?.Invert());
         }
 
         /// <summary>Iterates the provided enumerable, applying the provided action to each element.</summary>
@@ -92,28 +93,6 @@ namespace QuantumConcepts.Formats.StereoLithography
         public static bool IsNullOrEmpty(this string value)
         {
             return string.IsNullOrEmpty(value);
-        }
-
-        /// <summary>Interpolates the provided formatted string with the provided args using the default culture.</summary>
-        /// <param name="format">The formatted string.</param>
-        /// <param name="args">The values to use for interpolation.</param>
-        public static string Interpolate(this string format, params object[] args)
-        {
-            return format.Interpolate(CultureInfo.InvariantCulture, args);
-        }
-
-        /// <summary>Interpolates the provided formatted string with the provided args.</summary>
-        /// <param name="format">The formatted string.</param>
-        /// <param name="culture">The culture info to use.</param>
-        /// <param name="args">The values to use for interpolation.</param>
-        public static string Interpolate(this string format, CultureInfo culture, params object[] args)
-        {
-            if (format != null)
-            {
-                return string.Format(culture, format, args);
-            }
-
-            return null;
         }
     }
 }

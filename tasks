@@ -1,0 +1,34 @@
+#!/bin/bash
+
+build()
+{
+    dotnet build
+}
+
+test()
+{
+    if [ "$1" == "-w" ] || [ "$1" == "--watch" ]; then
+        dotnet watch test --project tests/Tests.csproj
+    else
+        dotnet test
+    fi
+}
+
+pack()
+{
+    dotnet pack -c Release --include-symbols --include-source src/STLdotNET.csproj
+}
+
+push()
+{
+    if [ "${NUGET_API_KEY}" == "" ]; then
+        echo 'Environment variable NUGET_API_KEY must be set.'
+        exit 1
+    else
+        PKG=`ls src/bin/Release/QuantumConcepts.Formats.STL.*.nupkg | sort -Vr | head -n 1`
+
+        dotnet nuget push ${PKG} -s https://api.nuget.org/v3/index.json -k ${NUGET_API_KEY}
+    fi
+}
+
+"$@"

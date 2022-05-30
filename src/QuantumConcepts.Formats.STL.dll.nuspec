@@ -3,7 +3,7 @@
 <package >
   <metadata>
     <id>QuantumConcepts.Formats.STL</id>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <title>Quantum Concepts STLdotNET</title>
     <description>This library facilitates the reading and writing of Stereo Lithograph (STL) files.</description>
     <authors>Quantum Concepts</authors>

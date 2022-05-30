@@ -11,6 +11,7 @@
     <icon>images/QC-Logo.jpg</icon>
     <projectUrl>https://github.com/QuantumConcepts/STLdotNET</projectUrl>
     <license type="file">docs/LICENSE.txt</license>
+    <readme>docs/README.md</readme>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <releaseNotes>Updated to support multi-targetting.</releaseNotes>
     <copyright>Copyright 2022 Quantum Concepts LLC, released under the GNU Affero General Public License./</copyright>

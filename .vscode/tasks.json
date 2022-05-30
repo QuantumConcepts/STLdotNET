@@ -52,8 +52,21 @@
                 "--include-symbols",
                 "--include-source",
                 "src/STLdotNET.csproj"
-            ],
-            "problemMatcher": "$msCompile"
+            ]
+        },
+        {
+            "label": "push",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "nuget",
+                "push",
+                "$(ls src/bin/Release/QuantumConcepts.Formats.STL.*.nupkg | sort -V | head -n 1)",
+                "-s",
+                "https://api.nuget.org/v3/index.json",
+                "-k",
+                "${NUGET_API_KEY}"
+            ]
         }
     ]
 }
